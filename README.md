@@ -1,2 +1,5 @@
-# StructuralFormulaTool
-A Structural Formula Tool Build to Help Teacher
+# Structural Formula Tool
+
+## 核心功能
+
+- 建立
