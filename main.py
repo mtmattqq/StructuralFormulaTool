@@ -1,20 +1,43 @@
 import pygame
 import tkinter
 
-window = tkinter.Tk()
-window.title("視窗元件配置")
-window.geometry("300x28")
+def varify_at_first_time():
+    window = tkinter.Tk()
+    window.title("視窗元件配置")
+    window.geometry("500x40")
 
-def varify():
-    a=0
+    def varify():
+        varifyCode.get()
 
-varifyCode=tkinter.Entry(width=20, font=("Arial", 14, "bold"), bg="light gray", fg="black", state=tkinter.NORMAL)
-varifyCode.insert(tkinter.END, string="some text")
-varifyCode.place(x=0,y=0)
-varifyCode.get()
+    hintText=tkinter.Label(
+        text="Enter varify code ",
+        font=("Arial", 14, "bold"),
+        padx=0, pady=0,
+        bg="white", fg="black",
+        highlightthickness=0,
+    )
+    hintText.grid(row=0, column=0)
 
-varifyButton=tkinter.Button(text="confirm", font=("Arial", 14, "bold"), padx=5, pady=5, bg="gray", fg="black", command=varify)
+    varifyCode=tkinter.Entry(
+        width=20,
+        font=("Arial", 14, "bold"),
+        bg="light gray", fg="black",
+        state=tkinter.NORMAL
+    )
+    varifyCode.grid(row=0, column=1)
 
-window.mainloop()
+
+    varifyButton=tkinter.Button(
+        text="confirm",
+        font=("Arial", 14, "bold"),
+        padx=2, pady=0,
+        bg="gray", fg="black",
+        command=varify
+    )
+    varifyButton.grid(row=0,column=2)
+
+    window.mainloop()
+
+varify_at_first_time()
 
 # pygame.init()
