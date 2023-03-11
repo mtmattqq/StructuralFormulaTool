@@ -1,7 +1,9 @@
 import pygame
 import tkinter
+from tkinter import filedialog
 
 def varify_at_first_time():
+    
     window = tkinter.Tk()
     window.title("視窗元件配置")
     window.geometry("500x40")
@@ -38,6 +40,12 @@ def varify_at_first_time():
 
     window.mainloop()
 
+def get_file_path():
+    file_path=filedialog.askopenfilename()
+    # print the selected file path
+    print("Selected file:", file_path)
+    return file_path
+
 varify_at_first_time()
 
-# pygame.init()
+pygame.init()
