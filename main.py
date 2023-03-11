@@ -1,51 +1,36 @@
 import pygame
-import tkinter
-from tkinter import filedialog
 
-def get_file_path():
-    file_path=filedialog.askopenfilename()
-    # print the selected file path
-    print("Selected file:", file_path)
-    return file_path
+# pygame init
+pygame.init()
+screen=pygame.display.set_mode((1000,600))
+screen.fill((255,255,255))
+pygame.display.set_caption("Test Game")
+font=pygame.font.SysFont('microsoftjhenghei',50)
+clock=pygame.time.Clock()
+# programIcon=pygame.image.load('icon.png')
+# pygame.display.set_icon(programIcon)
 
-window=tkinter.Tk()
-window.title("產品驗證")
-window.geometry("500x40")
-
-def varify():
-    varifyCode.get()
-    window.quit()
-
-hintText=tkinter.Label(
-    text="Enter varify code ",
-    font=("Arial", 14, "bold"),
-    padx=0, pady=0,
-    bg="white", fg="black",
-    highlightthickness=0,
-)
-hintText.grid(row=0, column=0)
-
-varifyCode=tkinter.Entry(
-    width=20,
-    font=("Arial", 14, "bold"),
-    bg="light gray", fg="black",
-    state=tkinter.NORMAL
-)
-varifyCode.grid(row=0, column=1)
+# variables
+FPS=60
+elements=[]
 
 
-varifyButton=tkinter.Button(
-    text="confirm",
-    font=("Arial", 14, "bold"),
-    padx=2, pady=0,
-    bg="light gray", fg="black",
-    command=varify
-)
-varifyButton.grid(row=0,column=2)
+def show_text(text='',x=0,y=0,color=(0,0,0)):
+    text=font.render(text,True,color)
+    textRect=text.get_rect()
+    textRect.center=(x,y)
+    screen.blit(text,textRect)
 
-window.mainloop()
+# main loop
 
-
-
-
-
+InGame=True
+while InGame:
+    screen.fill((255,255,255))
+    
+    # event in pygame
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            pygame.quit()
+    
+    pygame.display.flip()
+    clock.tick(FPS)
