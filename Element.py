@@ -7,8 +7,8 @@ EPS=0.00001
 
 class vec2D():
     def __init__(self,dx=0,dy=0):
-        self._x = dx
-        self._y = dy
+        self.x = dx
+        self.y = dy
     def __deepcopy__(self,memo):
         return vec2D(copy.deepcopy(self._x,memo), copy.deepcopy(self._y,memo))
     def set(self,dx,dy,length=0):
@@ -19,39 +19,39 @@ class vec2D():
                 l=mid
             else:
                 r=mid
-        self._x=l*dx
-        self._y=l*dy
+        self.x=l*dx
+        self.y=l*dy
     
     def set_angle(self,a,length=0):
         self._x = length*math.cos(a/180*PI)
         self._y = length*math.sin(a/180*PI)
 
     def __iadd__(self,other):
-        self._x+=other.x
-        self._y+=other.y
+        self.x+=other.x
+        self.y+=other.y
         return self
     def __isub__(self,other):
-        self._x-=other.x
-        self._y-=other.y
+        self.x-=other.x
+        self.y-=other.y
         return self
     def __imul__(self,other):
-        self._x*=other
-        self._y*=other
+        self.x*=other
+        self.y*=other
         return self
     def __add__(a,b):
         ret=vec2D(float(a.x),float(a.y))
-        ret._x+=b.x
-        ret._x+=b.y
+        ret.x+=b.x
+        ret.x+=b.y
         return ret
     def __sub__(a,b):
         ret=vec2D(float(a.x),float(a.y))
-        ret._x-=b.x
-        ret._x-=b.y
+        ret.x-=b.x
+        ret.x-=b.y
         return ret
     def __mul__(a,b):
         ret=vec2D(float(a.x),float(a.y))
-        ret._x*=b
-        ret._y*=b
+        ret.x*=b
+        ret.y*=b
         return ret
     def __eq__(self,other):
         return self.x==other.x and self.y==other.y
@@ -59,26 +59,17 @@ class vec2D():
         return ~(self==other)
     def get_tuple(self):
         return (self.x,self.y)
-    
-    # 讀取
-    @property
-    def x(self):
-        return self._x
-    @property
-    def y(self):
-        return self._y
-
-    # 寫入
-    @x.setter
-    def x(self,num):
-        self._x = num
-    @y.setter
-    def y(self,num):
-        self._y = num
 
 def dis(a, b):
     return math.sqrt((a.x-b.x)**2+(a.y-b.y)**2)
 
+class Bond:
+    def __init__(self,st=vec2D(0,0),ed=vec2D(0,0),type=1):
+        self.st=st
+        self.ed=ed
+        self.type=1
+
 class Element:
-    def __init__(self):
-        text="C"
+    def __init__(self,pos=vec2D(0,0)):
+        self.text="C"
+        self.pos=pos
