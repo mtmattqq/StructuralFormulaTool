@@ -4,7 +4,7 @@ import pygame
 pygame.init()
 screen=pygame.display.set_mode((1000,600))
 screen.fill((255,255,255))
-pygame.display.set_caption("Test Game")
+pygame.display.set_caption("結構式繪圖軟體")
 font=pygame.font.SysFont('microsoftjhenghei',50)
 clock=pygame.time.Clock()
 # programIcon=pygame.image.load('icon.png')
