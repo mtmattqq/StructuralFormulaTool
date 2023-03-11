@@ -2,10 +2,12 @@ import pygame
 import tkinter
 from tkinter import filedialog
 
+def varifyed():
+    a=0
+
 def varify_at_first_time():
-    
-    window = tkinter.Tk()
-    window.title("視窗元件配置")
+    window=tkinter.Tk()
+    window.title("產品驗證")
     window.geometry("500x40")
 
     def varify():
@@ -46,6 +48,9 @@ def get_file_path():
     print("Selected file:", file_path)
     return file_path
 
-varify_at_first_time()
+if not varifyed():
+    varify_at_first_time()
+
+
 
 pygame.init()
