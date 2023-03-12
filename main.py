@@ -13,7 +13,7 @@ clock=pygame.time.Clock()
 # variables
 FPS=60
 elements=[Element.Element()]
-relativePos=Element.vec2D(500,300)
+relativePos=Element.vec2D(480,290)
 
 def show_text(text='',x=0,y=0,color=(0,0,0)):
     text=font.render(text,True,color)
