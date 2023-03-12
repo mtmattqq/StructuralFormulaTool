@@ -35,6 +35,7 @@ while InGame:
     # show elements
     for element in elements:
         show_text(element.text,element.pos.x,element.pos.y)
+        
     
     pygame.display.flip()
     clock.tick(FPS)
