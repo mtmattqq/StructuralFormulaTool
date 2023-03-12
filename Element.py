@@ -63,6 +63,11 @@ class vec2D():
 def dis(a, b):
     return math.sqrt((a.x-b.x)**2+(a.y-b.y)**2)
 
+class Button:
+    def __init__(self,text="click me",pos=vec2D(0,0)):
+        self.text=text
+        self.pos=pos
+
 class Bond:
     def __init__(self,st=vec2D(0,0),ed=vec2D(0,0),type=1):
         self.st=st
@@ -73,3 +78,5 @@ class Element:
     def __init__(self,pos=vec2D(0,0)):
         self.text="C"
         self.pos=pos
+    def detect_mouth():
+        
