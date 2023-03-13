@@ -35,6 +35,8 @@ while InGame:
     # show elements
     for element in elements:
         show_text(element.text,element.pos.x,element.pos.y)
+        # debug
+        pygame.draw.rect(screen,(0,0,0),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y-20,45,45],1)
         
     
     pygame.display.flip()

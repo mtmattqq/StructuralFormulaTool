@@ -76,7 +76,7 @@ class Bond:
 
 class Element:
     def __init__(self,pos=vec2D(0,0)):
-        self.text="C"
+        self.text="Mg"
         self.pos=pos
     def detect_mouse():
         # havn't start
