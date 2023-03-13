@@ -78,5 +78,6 @@ class Element:
     def __init__(self,pos=vec2D(0,0)):
         self.text="C"
         self.pos=pos
-    def detect_mouth():
-        
+    def detect_mouse():
+        # havn't start
+        a=0
