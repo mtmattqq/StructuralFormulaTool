@@ -68,12 +68,6 @@ class Button:
         self.text=text
         self.pos=pos
 
-class Bond:
-    def __init__(self,st=vec2D(0,0),ed=vec2D(0,0),type=1):
-        self.st=st
-        self.ed=ed
-        self.type=1
-
 class Element:
     def __init__(self,pos=vec2D(0,0)):
         self.text="Mg"
@@ -81,3 +75,11 @@ class Element:
     def detect_mouse():
         # havn't start
         a=0
+
+class Bond:
+    def __init__(self,ste=Element(vec2D(0,0)),ede=Element(vec2D(0,0)),type=1):
+        self.st=ste.pos
+        self.ed=ede.pos
+        self.ste=ste
+        self.ede=ede
+        self.type=1
