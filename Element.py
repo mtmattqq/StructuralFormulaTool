@@ -73,10 +73,22 @@ class Element:
         self.text="Mg"
         self.pos=pos
     def detect_mouse(self,pos=vec2D(0,0)):
-        # havn't start
-        if self.pos.x-pos.x<0:
+        # 
+        # 0 2 1
+        # left -20,-40,+25,-20
+        if pos.x<self.pos.x-20 and pos.x>self.pos.x-40 and pos.y<self.pos.y+25 and pos.y>self.pos.y-20:
             # left
             return 1
+        elif pos.x<self.pos.x+45 and pos.x>self.pos.x+25 and pos.y<self.pos.y+25 and pos.y>self.pos.y-20:
+            # right
+            return 2
+        elif pos.x<self.pos.x+25 and pos.x>self.pos.x-20 and pos.y<self.pos.y-20 and pos.y>self.pos.y-40:
+            # up
+            return 3
+        elif pos.x<self.pos.x+25 and pos.x>self.pos.x-20 and pos.y<self.pos.y+45 and pos.y>self.pos.y+25:
+            # down
+            return 4
+        return 0
 
 class Bond:
     def __init__(self,ste=Element(vec2D(0,0)),ede=Element(vec2D(0,0)),type=1):
