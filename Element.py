@@ -72,9 +72,11 @@ class Element:
     def __init__(self,pos=vec2D(0,0)):
         self.text="Mg"
         self.pos=pos
-    def detect_mouse():
+    def detect_mouse(self,pos=vec2D(0,0)):
         # havn't start
-        a=0
+        if self.pos.x-pos.x<0:
+            # left
+            return 1
 
 class Bond:
     def __init__(self,ste=Element(vec2D(0,0)),ede=Element(vec2D(0,0)),type=1):
