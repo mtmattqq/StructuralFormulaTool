@@ -22,6 +22,30 @@ def show_text(text='',x=0,y=0,color=(0,0,0)):
     textRect.center=(x+relativePos.x,y+relativePos.y)
     screen.blit(text,textRect)
 
+def mouse_click():
+    # add new bond
+    for element in elements:
+        t=pygame.mouse.get_pos()
+        op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
+        if op==0:
+            continue
+        elif op==1:
+            # debug
+            newElement=Element.Element(Element.vec2D(element.pos.x-100,element.pos.y))
+            newBond=Element.Bond(element,newElement)
+            bonds.append(newBond)
+            elements.append(newElement)
+        elif op==2:
+            # debug
+            newElement=0
+        elif op==3:
+            # debug
+            newElement=0
+        elif op==4:
+            # debug
+            newElement=0
+        print(op)
+
 # main loop
 
 InGame=True
@@ -32,6 +56,9 @@ while InGame:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             pygame.quit()
+        if event.type == pygame.MOUSEBUTTONUP:
+            mouse_click()
+
     
     # show elements
     for element in elements:
@@ -58,26 +85,8 @@ while InGame:
             # debug
             pygame.draw.rect(screen,(255,0,255),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y+25,45,20],1)
         print(op)
-    if pygame.mouse.get_pressed()[0]:
-        # show button when mouse get close
-        for element in elements:
-            t=pygame.mouse.get_pos()
-            op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
-            if op==0:
-                continue
-            elif op==1:
-                # debug
-                newElement=0
-            elif op==2:
-                # debug
-                newElement=0
-            elif op==3:
-                # debug
-                newElement=0
-            elif op==4:
-                # debug
-                newElement=0
-            print(op)
+
+    
     
     pygame.display.flip()
     clock.tick(FPS)
