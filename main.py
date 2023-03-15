@@ -86,6 +86,12 @@ while InGame:
             pygame.draw.rect(screen,(255,0,255),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y+25,45,20],1)
         print(op)
 
+    # show bond
+    for bond in bonds:
+        v=Element.vec2D(bond.ede.pos.x-bond.ste.pos.x,bond.ede.pos.y-bond.ste.pos.y)
+        n=Element.vec2D(v.y,-v.x)
+        if bond.type==1:
+            pygame.draw.line(screen,(0,0,0),bond.ste.pos+relativePos,bond.ede.pos+relativePos)
     
     
     pygame.display.flip()
