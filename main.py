@@ -30,28 +30,32 @@ def mouse_click():
         op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
         if op==0:
             continue
-        elif op==1:
+        elif op==1 and not element.left:
             # debug
             newElement=Element.Element(Element.vec2D(element.pos.x-100,element.pos.y))
             newBond=Element.Bond(element,newElement)
+            element.left=newElement.right=True
             bonds.append(newBond)
             elements.append(newElement)
-        elif op==2:
+        elif op==2 and not element.right:
             # debug
             newElement=Element.Element(Element.vec2D(element.pos.x+100,element.pos.y))
             newBond=Element.Bond(element,newElement)
+            element.right=newElement.left=True
             bonds.append(newBond)
             elements.append(newElement)
-        elif op==3:
+        elif op==3 and not element.up:
             # debug
             newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y-100))
             newBond=Element.Bond(element,newElement)
+            element.up=newElement.down=True
             bonds.append(newBond)
             elements.append(newElement)
-        elif op==4:
+        elif op==4 and not element.down:
             # debug
             newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y+100))
             newBond=Element.Bond(element,newElement)
+            element.down=newElement.up=True
             bonds.append(newBond)
             elements.append(newElement)
         print(op)
