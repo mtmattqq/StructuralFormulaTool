@@ -11,7 +11,7 @@ clock=pygame.time.Clock()
 # pygame.display.set_icon(programIcon)
 
 # variables
-FPS=60
+FPS=10
 elements=[Element.Element()]
 bonds=[Element.Bond()]
 relativePos=Element.vec2D(480,290)
@@ -91,7 +91,12 @@ while InGame:
         v=Element.vec2D(bond.ede.pos.x-bond.ste.pos.x,bond.ede.pos.y-bond.ste.pos.y)
         n=Element.vec2D(v.y,-v.x)
         if bond.type==1:
-            pygame.draw.line(screen,(0,0,0),bond.ste.pos+relativePos,bond.ede.pos+relativePos)
+            print(bond.ste.pos.get_tuple())
+            # pygame.draw.line(
+            #     screen,(0,0,0),
+            #     (bond.ste.pos+relativePos).get_tuple(),
+            #     (bond.ede.pos+relativePos).get_tuple()
+            # )
     
     
     pygame.display.flip()
