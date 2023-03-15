@@ -16,7 +16,7 @@ elements=[Element.Element()]
 bonds=[Element.Bond()]
 bonds[0].type=0
 relativePos=Element.vec2D(480,290)
-selectedElement=Element.Element()
+selectedElement=elements[0]
 
 def show_text(text='',x=0,y=0,color=(0,0,0)):
     text=font.render(text,True,color)
@@ -25,6 +25,7 @@ def show_text(text='',x=0,y=0,color=(0,0,0)):
     screen.blit(text,textRect)
 
 def mouse_click():
+    global selectedElement
     # add new bond
     for element in elements:
         t=pygame.mouse.get_pos()
@@ -38,59 +39,77 @@ def mouse_click():
                 element.left=newElement.right=True
                 bonds.append(newBond)
                 elements.append(newElement)
+            else:
+                newBond=Element.Bond(element,selectedElement)
+                element.left=True
+                bonds.append(newBond)
         elif op==2 and not element.right:
-            # debug
-            newElement=Element.Element(Element.vec2D(element.pos.x+100,element.pos.y))
-            newBond=Element.Bond(element,newElement)
-            element.right=newElement.left=True
-            bonds.append(newBond)
-            elements.append(newElement)
+            if selectedElement==element:
+                newElement=Element.Element(Element.vec2D(element.pos.x+100,element.pos.y))
+                newBond=Element.Bond(element,newElement)
+                element.right=newElement.left=True
+                bonds.append(newBond)
+                elements.append(newElement)
+            else:
+                newBond=Element.Bond(element,selectedElement)
+                element.right=True
+                bonds.append(newBond)
         elif op==3 and not element.up:
-            # debug
-            newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y-100))
-            newBond=Element.Bond(element,newElement)
-            element.up=newElement.down=True
-            bonds.append(newBond)
-            elements.append(newElement)
+            if selectedElement==element:
+                newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y-100))
+                newBond=Element.Bond(element,newElement)
+                element.up=newElement.down=True
+                bonds.append(newBond)
+                elements.append(newElement)
+            else:
+                newBond=Element.Bond(element,selectedElement)
+                element.up=True
+                bonds.append(newBond)
         elif op==4 and not element.down:
-            # debug
-            newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y+100))
-            newBond=Element.Bond(element,newElement)
-            element.down=newElement.up=True
-            bonds.append(newBond)
-            elements.append(newElement)
+            if selectedElement==element:
+                newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y+100))
+                newBond=Element.Bond(element,newElement)
+                element.down=newElement.up=True
+                bonds.append(newBond)
+                elements.append(newElement)
+            else:
+                newBond=Element.Bond(element,selectedElement)
+                element.down=True
+                bonds.append(newBond)
+        elif op==5:
+            # element is choosed
+            element.highlight=True
+        element.selected=0
+    selectedElement=Element.Element()
 
 def add_bond_only():
+    global selectedElement
     if selectedElement.selected!=0:
         return
     for element in elements:
         t=pygame.mouse.get_pos()
         op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
         if op==0:
+            element.selected=0
             continue
         elif op==1 and not element.left:
             element.selected=1
             selectedElement=element
-            return
         elif op==2 and not element.right:
             element.selected=2
             selectedElement=element
-            return
         elif op==3 and not element.up:
             element.selected=3
             selectedElement=element
-            return
         elif op==4 and not element.down:
             element.selected=4
             selectedElement=element
-            return
 
 # main loop
 
 InGame=True
 while InGame:
     screen.fill((255,255,255))
-    
     # event in pygame
     for event in pygame.event.get():
         if event.type==pygame.QUIT:

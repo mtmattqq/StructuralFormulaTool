@@ -77,6 +77,7 @@ class Element:
         self.up=False
         self.down=False
         self.selected=0
+        self.highlight=False
     def detect_mouse(self,pos=vec2D(0,0)):
         # 
         # 0 2 1
@@ -93,6 +94,9 @@ class Element:
         elif pos.x<self.pos.x+25 and pos.x>self.pos.x-20 and pos.y<self.pos.y+45 and pos.y>self.pos.y+25:
             # down
             return 4
+        elif pos.x<self.pos.x+25 and pos.x>self.pos.x-20 and pos.y<self.pos.y+25 and pos.y>self.pos.y-20:
+            # middle
+            return 5
         return 0
 
 class Bond:
