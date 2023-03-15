@@ -70,7 +70,7 @@ class Button:
 
 class Element:
     def __init__(self,pos=vec2D(0,0)):
-        self.text="Mg"
+        self.text="C"
         self.pos=pos
         self.left=False
         self.right=False
@@ -97,6 +97,9 @@ class Element:
         elif pos.x<self.pos.x+25 and pos.x>self.pos.x-20 and pos.y<self.pos.y+25 and pos.y>self.pos.y-20:
             # middle
             return 5
+        elif pos.x<self.pos.x+45 and pos.x>self.pos.x+25 and pos.y<self.pos.y-20 and pos.y>self.pos.y-40:
+            # right up
+            return 6
         return 0
 
 class Bond:

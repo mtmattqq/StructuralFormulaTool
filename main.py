@@ -1,5 +1,7 @@
 import pygame
+from tkinter import filedialog as fd
 import Element
+
 # pygame init
 pygame.init()
 screen=pygame.display.set_mode((1000,600))
@@ -17,6 +19,10 @@ bonds=[Element.Bond()]
 bonds[0].type=0
 relativePos=Element.vec2D(480,290)
 selectedElement=elements[0]
+
+def file_path():
+    filename=fd.askopenfilename()
+    return filename
 
 def show_text(text='',x=0,y=0,color=(0,0,0)):
     text=font.render(text,True,color)
@@ -78,7 +84,10 @@ def mouse_click():
                 bonds.append(newBond)
         elif op==5:
             # element is choosed
-            element.highlight=True
+            if element.highlight:
+                element.highlight=False
+            else:
+                element.highlight=True
         element.selected=0
     selectedElement=Element.Element()
 
@@ -123,8 +132,8 @@ while InGame:
     # show elements
     for element in elements:
         show_text(element.text,element.pos.x,element.pos.y)
-        # debug
-        pygame.draw.rect(screen,(0,0,0),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y-20,45,45],1)
+        if element.highlight:
+            pygame.draw.rect(screen,(0,0,0),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y-20,45,45],1)
     
     # show button when mouse get close
     for element in elements:
@@ -144,6 +153,9 @@ while InGame:
         elif op==4:
             # debug
             pygame.draw.rect(screen,(255,0,255),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y+25,45,20],1)
+        elif op==6 and element.highlight:
+            # debug
+            pygame.draw.rect(screen,(0,255,255),[element.pos.x+relativePos.x+25,element.pos.y+relativePos.y-40,20,20],1)
         print(op)
 
     # show bond
