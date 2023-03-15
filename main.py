@@ -16,6 +16,7 @@ elements=[Element.Element()]
 bonds=[Element.Bond()]
 bonds[0].type=0
 relativePos=Element.vec2D(480,290)
+selectedElement=Element.Element()
 
 def show_text(text='',x=0,y=0,color=(0,0,0)):
     text=font.render(text,True,color)
@@ -31,12 +32,12 @@ def mouse_click():
         if op==0:
             continue
         elif op==1 and not element.left:
-            # debug
-            newElement=Element.Element(Element.vec2D(element.pos.x-100,element.pos.y))
-            newBond=Element.Bond(element,newElement)
-            element.left=newElement.right=True
-            bonds.append(newBond)
-            elements.append(newElement)
+            if selectedElement==element:
+                newElement=Element.Element(Element.vec2D(element.pos.x-100,element.pos.y))
+                newBond=Element.Bond(element,newElement)
+                element.left=newElement.right=True
+                bonds.append(newBond)
+                elements.append(newElement)
         elif op==2 and not element.right:
             # debug
             newElement=Element.Element(Element.vec2D(element.pos.x+100,element.pos.y))
@@ -58,7 +59,31 @@ def mouse_click():
             element.down=newElement.up=True
             bonds.append(newBond)
             elements.append(newElement)
-        print(op)
+
+def add_bond_only():
+    if selectedElement.selected!=0:
+        return
+    for element in elements:
+        t=pygame.mouse.get_pos()
+        op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
+        if op==0:
+            continue
+        elif op==1 and not element.left:
+            element.selected=1
+            selectedElement=element
+            return
+        elif op==2 and not element.right:
+            element.selected=2
+            selectedElement=element
+            return
+        elif op==3 and not element.up:
+            element.selected=3
+            selectedElement=element
+            return
+        elif op==4 and not element.down:
+            element.selected=4
+            selectedElement=element
+            return
 
 # main loop
 
@@ -70,8 +95,10 @@ while InGame:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             pygame.quit()
-        if event.type == pygame.MOUSEBUTTONUP:
+        if event.type==pygame.MOUSEBUTTONUP:
             mouse_click()
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            add_bond_only()
 
     
     # show elements

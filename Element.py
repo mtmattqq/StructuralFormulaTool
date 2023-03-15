@@ -76,6 +76,7 @@ class Element:
         self.right=False
         self.up=False
         self.down=False
+        self.selected=0
     def detect_mouse(self,pos=vec2D(0,0)):
         # 
         # 0 2 1
