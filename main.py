@@ -11,9 +11,10 @@ clock=pygame.time.Clock()
 # pygame.display.set_icon(programIcon)
 
 # variables
-FPS=10
+FPS=60
 elements=[Element.Element()]
 bonds=[Element.Bond()]
+bonds[0].type=0
 relativePos=Element.vec2D(480,290)
 
 def show_text(text='',x=0,y=0,color=(0,0,0)):
@@ -37,13 +38,22 @@ def mouse_click():
             elements.append(newElement)
         elif op==2:
             # debug
-            newElement=0
+            newElement=Element.Element(Element.vec2D(element.pos.x+100,element.pos.y))
+            newBond=Element.Bond(element,newElement)
+            bonds.append(newBond)
+            elements.append(newElement)
         elif op==3:
             # debug
-            newElement=0
+            newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y-100))
+            newBond=Element.Bond(element,newElement)
+            bonds.append(newBond)
+            elements.append(newElement)
         elif op==4:
             # debug
-            newElement=0
+            newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y+100))
+            newBond=Element.Bond(element,newElement)
+            bonds.append(newBond)
+            elements.append(newElement)
         print(op)
 
 # main loop
@@ -88,15 +98,28 @@ while InGame:
 
     # show bond
     for bond in bonds:
+        if bond.type==0:
+            continue
         v=Element.vec2D(bond.ede.pos.x-bond.ste.pos.x,bond.ede.pos.y-bond.ste.pos.y)
+        v*=0.3
         n=Element.vec2D(v.y,-v.x)
-        if bond.type==1:
-            print(bond.ste.pos.get_tuple())
-            # pygame.draw.line(
-            #     screen,(0,0,0),
-            #     (bond.ste.pos+relativePos).get_tuple(),
-            #     (bond.ede.pos+relativePos).get_tuple()
-            # )
+        n.set(n.x,n.y,5)
+
+        st=Element.vec2D(bond.ste.pos.x,bond.ste.pos.y)
+        st+=relativePos
+        st+=v
+        ed=Element.vec2D(bond.ede.pos.x,bond.ede.pos.y)
+        ed+=relativePos
+        ed-=v
+
+        if bond.type>=1:
+            pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
+        if bond.type>=2:
+            st+=n; ed+=n
+            pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
+        if bond.type==3:
+            st+=n; ed+=n
+            pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
     
     
     pygame.display.flip()
