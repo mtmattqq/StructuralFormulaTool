@@ -93,7 +93,7 @@ def mouse_click():
     selectedElement=Element.Element()
 
 def add_bond_only():
-    global selectedElement
+    global selectedElement,selectedPos
     if selectedElement.selected!=0:
         return
     for element in elements:
@@ -114,6 +114,11 @@ def add_bond_only():
         elif op==4 and not element.down:
             element.selected=4
             selectedElement=element
+    if selectedElement.selected!=0:
+        return
+    t==pygame.mouse.get_pos()
+    selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
+
 
 # main loop
 
