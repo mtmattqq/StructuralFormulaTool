@@ -100,7 +100,7 @@ def mouse_click():
                     if bond.ste.id==element.id or bond.ede.id==element.id:
                         bond.ste.left=bond.ste.right=bond.ste.up=bond.ste.down=False
                         bond.ede.left=bond.ede.right=bond.ede.up=bond.ede.down=False
-                        bonds.remove(bond)
+                        bond.type=0
                     print(bond.ste.id,bond.ede.id,element.id)
                 elements.remove(element)
         element.selected=0
