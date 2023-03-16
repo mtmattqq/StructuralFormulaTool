@@ -4,6 +4,7 @@ import copy
 
 PI=3.1415926535
 EPS=0.00001
+id=0
 
 class vec2D():
     def __init__(self,dx=0,dy=0):
@@ -70,6 +71,7 @@ class Button:
 
 class Element:
     def __init__(self,pos=vec2D(0,0)):
+        global id
         self.text="C"
         self.pos=pos
         self.left=False
@@ -79,6 +81,8 @@ class Element:
         self.selected=0
         self.highlight=False
         self.isDefault=False
+        self.id=id
+        id+=1
     def detect_mouse(self,pos=vec2D(0,0)):
         # 
         # 0 2 1

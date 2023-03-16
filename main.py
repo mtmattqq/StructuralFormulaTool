@@ -13,7 +13,7 @@ clock=pygame.time.Clock()
 # pygame.display.set_icon(programIcon)
 
 # variables
-FPS=60
+FPS=120
 elements=[Element.Element()]
 elements[0].isDefault=True
 bonds=[Element.Bond()]
@@ -39,20 +39,22 @@ def mouse_click():
         t=pygame.mouse.get_pos()
         op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
         if op==0:
+            element.selected=0
+            element.highlight=False
             continue
-        elif op==1 and not element.left:
-            if selectedElement==element:
+        elif op==1:
+            if selectedElement.id==element.id and not element.left:
                 newElement=Element.Element(Element.vec2D(element.pos.x-100,element.pos.y))
                 newBond=Element.Bond(element,newElement)
                 element.left=newElement.right=True
                 bonds.append(newBond)
                 elements.append(newElement)
             else:
+                selectedElement.selected=0
                 newBond=Element.Bond(element,selectedElement)
-                element.left=True
                 bonds.append(newBond)
-        elif op==2 and not element.right:
-            if selectedElement==element:
+        elif op==2:
+            if selectedElement.id==element.id and not element.right:
                 newElement=Element.Element(Element.vec2D(element.pos.x+100,element.pos.y))
                 newBond=Element.Bond(element,newElement)
                 element.right=newElement.left=True
@@ -60,27 +62,27 @@ def mouse_click():
                 elements.append(newElement)
             else:
                 newBond=Element.Bond(element,selectedElement)
-                element.right=True
                 bonds.append(newBond)
-        elif op==3 and not element.up:
-            if selectedElement==element:
+        elif op==3:
+            if selectedElement.id==element.id and not element.up:
                 newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y-100))
                 newBond=Element.Bond(element,newElement)
                 element.up=newElement.down=True
                 bonds.append(newBond)
                 elements.append(newElement)
             else:
+                selectedElement.selected=0
                 newBond=Element.Bond(element,selectedElement)
-                element.up=True
                 bonds.append(newBond)
-        elif op==4 and not element.down:
-            if selectedElement==element:
+        elif op==4:
+            if selectedElement.id==element.id and not element.down:
                 newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y+100))
                 newBond=Element.Bond(element,newElement)
                 element.down=newElement.up=True
                 bonds.append(newBond)
                 elements.append(newElement)
             else:
+                selectedElement.selected=0
                 newBond=Element.Bond(element,selectedElement)
                 element.down=True
                 bonds.append(newBond)
@@ -92,8 +94,18 @@ def mouse_click():
             else:
                 element.highlight=True
                 selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
+        elif op==6:
+            if not element.isDefault:
+                for bond in bonds:
+                    if bond.ste.id==element.id or bond.ede.id==element.id:
+                        bond.ste.left=bond.ste.right=bond.ste.up=bond.ste.down=False
+                        bond.ede.left=bond.ede.right=bond.ede.up=bond.ede.down=False
+                        bonds.remove(bond)
+                    print(bond.ste.id,bond.ede.id,element.id)
+                elements.remove(element)
         element.selected=0
     selectedElement=Element.Element()
+    Element.id-=1
     selectedElement.isDefault=True
 
 def add_bond_only():
@@ -141,6 +153,7 @@ while InGame:
         show_text(element.text,element.pos.x,element.pos.y)
         if element.highlight:
             pygame.draw.rect(screen,(0,0,0),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y-20,45,45],1)
+        # print(element.id)
     
     # show button when mouse get close
     for element in elements:
@@ -171,7 +184,7 @@ while InGame:
             # debug
             pygame.draw.rect(screen,(0,255,255),[element.pos.x+relativePos.x+25,element.pos.y+relativePos.y-40,20,20],1)
         # print(op)
-    print(selectedPos.get_tuple())
+    
     # show bond
     for bond in bonds:
         if bond.type==0:
