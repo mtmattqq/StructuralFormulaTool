@@ -78,6 +78,7 @@ class Element:
         self.down=False
         self.selected=0
         self.highlight=False
+        self.isDefault=False
     def detect_mouse(self,pos=vec2D(0,0)):
         # 
         # 0 2 1

@@ -15,6 +15,7 @@ clock=pygame.time.Clock()
 # variables
 FPS=60
 elements=[Element.Element()]
+elements[0].isDefault=True
 bonds=[Element.Bond()]
 bonds[0].type=0
 relativePos=Element.vec2D(480,290)
@@ -32,7 +33,7 @@ def show_text(text='',x=0,y=0,color=(0,0,0)):
     screen.blit(text,textRect)
 
 def mouse_click():
-    global selectedElement
+    global selectedElement,selectedPos
     # add new bond
     for element in elements:
         t=pygame.mouse.get_pos()
@@ -87,10 +88,13 @@ def mouse_click():
             # element is choosed
             if element.highlight:
                 element.highlight=False
+                selectedPos=Element.vec2D(0,0)
             else:
                 element.highlight=True
+                selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
         element.selected=0
     selectedElement=Element.Element()
+    selectedElement.isDefault=True
 
 def add_bond_only():
     global selectedElement,selectedPos
@@ -114,17 +118,7 @@ def add_bond_only():
         elif op==4 and not element.down:
             element.selected=4
             selectedElement=element
-        elif op==5 and element.highlight:
-            element.selected=5
-            selectedElement=element
-            t=pygame.mouse.get_pos()
-            if selectedPos!=Element.vec2D(0,0):
-                difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
-                element.pos+=difference
-            else:
-                selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
-            
-   
+        
 
 
 # main loop
@@ -166,11 +160,18 @@ while InGame:
         elif op==4:
             # debug
             pygame.draw.rect(screen,(255,0,255),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y+25,45,20],1)
+        elif op==5 and element.highlight and pygame.mouse.get_pressed()[0]:
+            t=pygame.mouse.get_pos()
+            if selectedPos!=Element.vec2D(0,0):
+                difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
+                # print(difference.get_tuple())
+                element.pos+=difference
+            selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
         elif op==6 and element.highlight:
             # debug
             pygame.draw.rect(screen,(0,255,255),[element.pos.x+relativePos.x+25,element.pos.y+relativePos.y-40,20,20],1)
-        print(op)
-
+        # print(op)
+    print(selectedPos.get_tuple())
     # show bond
     for bond in bonds:
         if bond.type==0:
