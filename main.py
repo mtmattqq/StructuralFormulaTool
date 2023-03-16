@@ -114,10 +114,17 @@ def add_bond_only():
         elif op==4 and not element.down:
             element.selected=4
             selectedElement=element
-    if selectedElement.selected!=0:
-        return
-    t==pygame.mouse.get_pos()
-    selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
+        elif op==5 and element.highlight:
+            element.selected=5
+            selectedElement=element
+            t=pygame.mouse.get_pos()
+            if selectedPos!=Element.vec2D(0,0):
+                difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
+                element.pos+=difference
+            else:
+                selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
+            
+   
 
 
 # main loop
