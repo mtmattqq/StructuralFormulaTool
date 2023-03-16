@@ -19,6 +19,7 @@ bonds=[Element.Bond()]
 bonds[0].type=0
 relativePos=Element.vec2D(480,290)
 selectedElement=elements[0]
+selectedPos=Element.vec2D(0,0)
 
 def file_path():
     filename=fd.askopenfilename()
