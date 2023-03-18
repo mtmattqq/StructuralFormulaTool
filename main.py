@@ -201,6 +201,8 @@ while InGame:
             continue
         v=Element.vec2D(bond.ede.pos.x-bond.ste.pos.x,bond.ede.pos.y-bond.ste.pos.y)
         v*=0.3
+        if Element.dis(Element.vec2D(0,0),v)>50:
+            v.set(v.x,v.y,50)
         n=Element.vec2D(v.y,-v.x)
         n.set(n.x,n.y,5)
 
