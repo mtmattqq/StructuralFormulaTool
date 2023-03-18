@@ -1,6 +1,8 @@
 import pygame
 from tkinter import filedialog as fd
 import Element
+import io
+from PIL import Image
 
 # pygame init
 pygame.init()
@@ -23,9 +25,9 @@ selectedElement=elements[0]
 selectedPos=Element.vec2D(0,0)
 bufferString=""
 
-def file_path():
-    filename=fd.askopenfilename()
-    return filename
+# def file_path():
+#     filename=
+#     return filename
 
 def show_text(text='',x=0,y=0,color=(0,0,0)):
     text=font.render(text,True,color)
@@ -108,6 +110,15 @@ def mouse_click():
     selectedElement=Element.Element()
     Element.id-=1
     selectedElement.isDefault=True
+    
+    if t[0]<30 and t[0]>0 and t[1]<15 and t[0]>0:
+        # file=fd.asksaveasfile(filetypes=(('png files', '*.png'),('jpeg files', '*.jpeg')))
+        # tp=io.BytesIO()
+        f=pygame.image.tostring(screen,"RGB")
+        tp=list(f)
+        # png.from_array('L').save
+        print(tp)
+        # file.write(tp)
 
 def add_bond_only():
     global selectedElement,selectedPos
@@ -223,8 +234,7 @@ while InGame:
             pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
 
     pygame.draw.rect(screen,(200,200,200),[0,0,30,15],2)
-    if t[0]<30 and t[0]>0 and t[1]<15 and t[0]>0:
-        pygame.image.save(screen,file_path())
+    
     
     pygame.display.flip()
     clock.tick(FPS)
