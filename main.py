@@ -21,6 +21,7 @@ bonds[0].type=0
 relativePos=Element.vec2D(480,290)
 selectedElement=elements[0]
 selectedPos=Element.vec2D(0,0)
+bufferString=""
 
 def file_path():
     filename=fd.askopenfilename()
@@ -33,7 +34,7 @@ def show_text(text='',x=0,y=0,color=(0,0,0)):
     screen.blit(text,textRect)
 
 def mouse_click():
-    global selectedElement,selectedPos
+    global selectedElement,selectedPos,bufferString
     # add new bond
     for element in elements:
         t=pygame.mouse.get_pos()
@@ -46,7 +47,7 @@ def mouse_click():
             if selectedElement.id==element.id and not element.left:
                 newElement=Element.Element(Element.vec2D(element.pos.x-100,element.pos.y))
                 newBond=Element.Bond(element,newElement)
-                element.left=newElement.right=True
+                # element.left=newElement.right=True
                 bonds.append(newBond)
                 elements.append(newElement)
             else:
@@ -57,7 +58,7 @@ def mouse_click():
             if selectedElement.id==element.id and not element.right:
                 newElement=Element.Element(Element.vec2D(element.pos.x+100,element.pos.y))
                 newBond=Element.Bond(element,newElement)
-                element.right=newElement.left=True
+                # element.right=newElement.left=True
                 bonds.append(newBond)
                 elements.append(newElement)
             else:
@@ -67,7 +68,7 @@ def mouse_click():
             if selectedElement.id==element.id and not element.up:
                 newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y-100))
                 newBond=Element.Bond(element,newElement)
-                element.up=newElement.down=True
+                # element.up=newElement.down=True
                 bonds.append(newBond)
                 elements.append(newElement)
             else:
@@ -78,13 +79,12 @@ def mouse_click():
             if selectedElement.id==element.id and not element.down:
                 newElement=Element.Element(Element.vec2D(element.pos.x,element.pos.y+100))
                 newBond=Element.Bond(element,newElement)
-                element.down=newElement.up=True
+                # element.down=newElement.up=True
                 bonds.append(newBond)
                 elements.append(newElement)
             else:
                 selectedElement.selected=0
                 newBond=Element.Bond(element,selectedElement)
-                element.down=True
                 bonds.append(newBond)
         elif op==5:
             # element is choosed
@@ -93,6 +93,7 @@ def mouse_click():
                 selectedPos=Element.vec2D(0,0)
             else:
                 element.highlight=True
+                bufferString=""
                 selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
         elif op==6:
             if not element.isDefault:
@@ -146,6 +147,15 @@ while InGame:
             mouse_click()
         if event.type==pygame.MOUSEBUTTONDOWN:
             add_bond_only()
+        if event.type==pygame.KEYDOWN:
+            keys=pygame.key.get_pressed()
+            if keys[pygame.K_BACKSPACE]:
+                bufferString=bufferString[:-1]
+            else:
+                bufferString+=event.unicode
+            for element in elements:
+                if element.highlight:
+                    element.text=bufferString
 
     
     # show elements
