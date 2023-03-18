@@ -2,6 +2,7 @@ import pygame
 from tkinter import filedialog as fd
 import Element
 import io
+import zlib
 from PIL import Image
 
 # pygame init
@@ -112,12 +113,20 @@ def mouse_click():
     selectedElement.isDefault=True
     
     if t[0]<30 and t[0]>0 and t[1]<15 and t[0]>0:
-        # file=fd.asksaveasfile(filetypes=(('png files', '*.png'),('jpeg files', '*.jpeg')))
+        file=fd.asksaveasfile(filetypes=(('png files', '*.png'),('jpeg files', '*.jpeg')))
+        file.close()
+        file_path=fd.askopenfilename()
         # tp=io.BytesIO()
         f=pygame.image.tostring(screen,"RGB")
-        tp=list(f)
+        # tp=list(f)
+        img=Image.frombytes("L",(1000,600),f)
+        img.save(file_path)
+
+        # image_str = pygame.image.tostring(screen,"RGB")
+        # compressed_image_str = zlib.compress(image_str)
+        
         # png.from_array('L').save
-        print(tp)
+        # print(tp)
         # file.write(tp)
 
 def add_bond_only():
