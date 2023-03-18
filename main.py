@@ -166,8 +166,8 @@ while InGame:
         # print(element.id)
     
     # show button when mouse get close
+    t=pygame.mouse.get_pos()
     for element in elements:
-        t=pygame.mouse.get_pos()
         op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
         if op==0:
             continue
@@ -184,7 +184,7 @@ while InGame:
             # debug
             pygame.draw.rect(screen,(255,0,255),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y+25,45,20],1)
         elif op==5 and element.highlight and pygame.mouse.get_pressed()[0]:
-            t=pygame.mouse.get_pos()
+            # t=pygame.mouse.get_pos()
             if selectedPos!=Element.vec2D(0,0):
                 difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
                 # print(difference.get_tuple())
@@ -221,7 +221,10 @@ while InGame:
         if bond.type==3:
             st+=n; ed+=n
             pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
-    
+
+    pygame.draw.rect(screen,(200,200,200),[0,0,30,15],2)
+    if t[0]<30 and t[0]>0 and t[1]<15 and t[0]>0:
+        pygame.image.save(screen,file_path())
     
     pygame.display.flip()
     clock.tick(FPS)
