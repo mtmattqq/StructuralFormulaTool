@@ -23,6 +23,7 @@ bonds=[Element.Bond()]
 bonds[0].type=0
 relativePos=Element.vec2D(480,290)
 selectedElement=elements[0]
+selectedBond=bonds[0]
 selectedPos=Element.vec2D(0,0)
 bufferString=""
 
@@ -111,10 +112,16 @@ def mouse_click():
     selectedElement=Element.Element()
     Element.id-=1
     selectedElement.isDefault=True
+
+    for bond in bonds:
+        t=pygame.mouse.get_pos()
+        op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
     
-    if t[0]<30 and t[0]>0 and t[1]<15 and t[0]>0:
+    if t[0]<40 and t[0]>0 and t[1]<20 and t[0]>0:
         file=fd.asksaveasfile(filetypes=(('png files', '*.png'),('jpeg files', '*.jpeg')))
-        file.close()
+        if file!=None:
+            file.close()
+            return
         file_path=fd.askopenfilename()
         # tp=io.BytesIO()
         f=pygame.image.tostring(screen,"RGBA")
@@ -223,7 +230,7 @@ while InGame:
         if bond.type==3:
             st+=n; ed+=n
             pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
-    pygame.draw.rect(screen,(200,200,200),[0,0,30,15],2)
+    pygame.draw.rect(screen,(100,100,100),[0,0,40,20],2)
     pygame.display.flip()
     
     # event in pygame
