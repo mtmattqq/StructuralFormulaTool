@@ -113,14 +113,13 @@ def mouse_click():
     selectedElement.isDefault=True
     
     if t[0]<30 and t[0]>0 and t[1]<15 and t[0]>0:
-        # file=fd.asksaveasfile(filetypes=(('png files', '*.png'),('jpeg files', '*.jpeg')))
-        # file.close()
+        file=fd.asksaveasfile(filetypes=(('png files', '*.png'),('jpeg files', '*.jpeg')))
+        file.close()
         file_path=fd.askopenfilename()
         # tp=io.BytesIO()
         f=pygame.image.tostring(screen,"RGBA")
         # tp=list(f)
-        img=Image.frombytes("L",(1000,600),f)
-        img.show()
+        img=Image.frombytes("RGBA",(1000,600),f)
         img.save(file_path)
 
         # image_str = pygame.image.tostring(screen,"RGB")
