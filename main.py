@@ -119,7 +119,7 @@ def mouse_click():
         # tp=io.BytesIO()
         f=pygame.image.tostring(screen,"RGB")
         # tp=list(f)
-        img=Image.frombytes("L",(1000,600),f)
+        img=Image.frombytes("L",(500,300),f)
         img.save(file_path)
 
         # image_str = pygame.image.tostring(screen,"RGB")
@@ -159,25 +159,7 @@ def add_bond_only():
 InGame=True
 while InGame:
     screen.fill((255,255,255))
-    # event in pygame
-    for event in pygame.event.get():
-        if event.type==pygame.QUIT:
-            pygame.quit()
-        if event.type==pygame.MOUSEBUTTONUP:
-            mouse_click()
-        if event.type==pygame.MOUSEBUTTONDOWN:
-            add_bond_only()
-        if event.type==pygame.KEYDOWN:
-            keys=pygame.key.get_pressed()
-            if keys[pygame.K_BACKSPACE]:
-                bufferString=bufferString[:-1]
-            else:
-                bufferString+=event.unicode
-            for element in elements:
-                if element.highlight:
-                    element.text=bufferString
 
-    
     # show elements
     for element in elements:
         show_text(element.text,element.pos.x,element.pos.y)
@@ -241,9 +223,24 @@ while InGame:
         if bond.type==3:
             st+=n; ed+=n
             pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
-
     pygame.draw.rect(screen,(200,200,200),[0,0,30,15],2)
-    
-    
     pygame.display.flip()
+    
+    # event in pygame
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            pygame.quit()
+        if event.type==pygame.MOUSEBUTTONUP:
+            mouse_click()
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            add_bond_only()
+        if event.type==pygame.KEYDOWN:
+            keys=pygame.key.get_pressed()
+            if keys[pygame.K_BACKSPACE]:
+                bufferString=bufferString[:-1]
+            else:
+                bufferString+=event.unicode
+            for element in elements:
+                if element.highlight:
+                    element.text=bufferString
     clock.tick(FPS)
