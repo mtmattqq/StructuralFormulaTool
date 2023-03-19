@@ -5,6 +5,7 @@ import copy
 PI=3.1415926535
 EPS=0.00001
 id=0
+bid=0
 
 class vec2D():
     def __init__(self,dx=0,dy=0):
@@ -67,11 +68,6 @@ def dis(a,b):
 def dot(a,b):
     return a.x*b.x+a.y*b.y
 
-class Button:
-    def __init__(self,text="click me",pos=vec2D(0,0)):
-        self.text=text
-        self.pos=pos
-
 class Element:
     def __init__(self,pos=vec2D(0,0)):
         global id
@@ -112,9 +108,12 @@ class Element:
 
 class Bond:
     def __init__(self,ste=Element(vec2D(0,0)),ede=Element(vec2D(0,0))):
+        global bid
         self.ste=ste
         self.ede=ede
         self.type=1
+        self.id=bid
+        bid+=1
     def detect_mouse(self,pos=vec2D(0,0)):
         # return True or False
         f1=self.ste.pos.y-self.ede.pos.y
@@ -125,4 +124,16 @@ class Bond:
             pa=vec2D(self.ste.pos.x-pos.x,self.ste.pos.y-pos.y)
             if dot(pa,pb)<=0:
                 return True
+        return False
+    
+class Button:
+    def __init__(self,text="click me",pos=vec2D(0,0),color=[0,0,0],bd=Bond()):
+        self.text=text
+        self.pos=pos
+        self.color=color
+        self.type=1
+        self.bond=bd
+    def detect_mouse(self,pos=vec2D(0,0)):
+        if pos.x<self.pos.x+20 and pos.x>self.pos.x and pos.y<self.pos.y+20 and pos.y>self.pos.y:
+            return True
         return False

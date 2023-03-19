@@ -21,7 +21,8 @@ elements=[Element.Element()]
 elements[0].isDefault=True
 bonds=[Element.Bond()]
 bonds[0].type=0
-buttons=[]
+buttons=[Element.Button()]
+buttons[0].type=0
 relativePos=Element.vec2D(480,290)
 selectedElement=elements[0]
 selectedBond=bonds[0]
@@ -41,8 +42,9 @@ def show_text(text='',x=0,y=0,color=(0,0,0)):
 def mouse_click():
     global selectedElement,selectedPos,bufferString
     # add new bond
+    operate=False
+    t=pygame.mouse.get_pos()
     for element in elements:
-        t=pygame.mouse.get_pos()
         op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
         if op==0:
             element.selected=0
@@ -109,16 +111,41 @@ def mouse_click():
                         bond.type=0
                     print(bond.ste.id,bond.ede.id,element.id)
                 elements.remove(element)
+        if op>=1 and op<=6:
+            operate=True
         element.selected=0
     selectedElement=Element.Element()
     Element.id-=1
     selectedElement.isDefault=True
 
-    for bond in bonds:
-        t=pygame.mouse.get_pos()
-        op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
+    for button in buttons:
+        op=button.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
         if op:
-            buttons.append()
+            if button.text=="|":
+                button.bond.type=1
+            elif button.text=="||":
+                button.bond.type=2
+            elif button.text=="|||":
+                button.bond.type=3
+            elif button.text=="x":
+                button.bond.type=0
+
+    if operate:
+        return
+
+    buttons.clear()
+    for bond in bonds:
+        op=bond.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
+        if op:
+            newButton=Element.Button("|",Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y+20),[0,0,0],bond)
+            buttons.append(newButton)
+            newButton=Element.Button("||",Element.vec2D(t[0]-relativePos.x+20,t[1]-relativePos.y+20),[0,0,0],bond)
+            buttons.append(newButton)
+            newButton=Element.Button("|||",Element.vec2D(t[0]-relativePos.x+40,t[1]-relativePos.y+20),[0,0,0],bond)
+            buttons.append(newButton)
+            newButton=Element.Button("x",Element.vec2D(t[0]-relativePos.x+60,t[1]-relativePos.y+20),[0,0,0],bond)
+            buttons.append(newButton)
+            
     
     if t[0]<40 and t[0]>0 and t[1]<20 and t[0]>0:
         file=fd.asksaveasfile(filetypes=(('png files', '*.png'),('jpeg files', '*.jpeg')))
@@ -207,6 +234,20 @@ while InGame:
             pygame.draw.rect(screen,(0,255,255),[element.pos.x+relativePos.x+25,element.pos.y+relativePos.y-40,20,20],1)
         # print(op)
     
+    # show button
+    for button in buttons:
+        if button.type==0:
+            continue
+        ft=pygame.font.SysFont('cambriamath',14)
+        text=ft.render(button.text,True,button.color)
+        textRect=text.get_rect()
+        textRect.topleft=(button.pos.x+relativePos.x,button.pos.y+relativePos.y)
+        pygame.draw.rect(screen,(0,0,0),[button.pos.x+relativePos.x-5,button.pos.y+relativePos.y,20,20],1)
+        screen.blit(text,textRect)
+
+    for bond in bonds:
+        if bond.type==0:
+            bonds.remove(bond)
     # show bond
     for bond in bonds:
         if bond.type==0:
@@ -228,11 +269,16 @@ while InGame:
         if bond.type>=1:
             pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
         if bond.type>=2:
-            st+=n; ed+=n
+            st-=n; ed-=n
             pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
         if bond.type==3:
-            st+=n; ed+=n
+            st+=n*2; ed+=n*2
             pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
+    ft=pygame.font.SysFont('cambriamath',14)
+    text=ft.render("save",True,(100,100,100))
+    textRect=text.get_rect()
+    textRect.topleft=(5,0)
+    screen.blit(text,textRect)
     pygame.draw.rect(screen,(100,100,100),[0,0,40,20],2)
     pygame.display.flip()
     
