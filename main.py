@@ -119,7 +119,7 @@ def mouse_click():
         # tp=io.BytesIO()
         f=pygame.image.tostring(screen,"RGB")
         # tp=list(f)
-        img=Image.frombytes("L",(500,300),f)
+        img=Image.frombytes("L",(2000,1200),f)
         img.save(file_path)
 
         # image_str = pygame.image.tostring(screen,"RGB")
@@ -244,3 +244,4 @@ while InGame:
                 if element.highlight:
                     element.text=bufferString
     clock.tick(FPS)
+pygame.quit()
