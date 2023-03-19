@@ -21,6 +21,7 @@ elements=[Element.Element()]
 elements[0].isDefault=True
 bonds=[Element.Bond()]
 bonds[0].type=0
+buttons=[]
 relativePos=Element.vec2D(480,290)
 selectedElement=elements[0]
 selectedBond=bonds[0]
@@ -116,10 +117,12 @@ def mouse_click():
     for bond in bonds:
         t=pygame.mouse.get_pos()
         op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
+        if op:
+            buttons.append()
     
     if t[0]<40 and t[0]>0 and t[1]<20 and t[0]>0:
         file=fd.asksaveasfile(filetypes=(('png files', '*.png'),('jpeg files', '*.jpeg')))
-        if file!=None:
+        if file==None:
             file.close()
             return
         file_path=fd.askopenfilename()
