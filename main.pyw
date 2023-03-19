@@ -285,7 +285,7 @@ while InGame:
     # event in pygame
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
-            pygame.quit()
+            InGame=False
         if event.type==pygame.MOUSEBUTTONUP:
             mouse_click()
         if event.type==pygame.MOUSEBUTTONDOWN:
