@@ -61,8 +61,11 @@ class vec2D():
     def get_tuple(self):
         return (self.x,self.y)
 
-def dis(a, b):
+def dis(a,b):
     return math.sqrt((a.x-b.x)**2+(a.y-b.y)**2)
+
+def dot(a,b):
+    return a.x*b.x+a.y*b.y
 
 class Button:
     def __init__(self,text="click me",pos=vec2D(0,0)):
@@ -112,3 +115,14 @@ class Bond:
         self.ste=ste
         self.ede=ede
         self.type=1
+    def detect_mouse(self,pos=vec2D(0,0)):
+        # return True or False
+        f1=self.ste.pos.y-self.ede.pos.y
+        f2=-(self.ste.pos.x-self.ede.pos.x)
+        f3=-(self.ste.pos.x*f1+self.ste.pos.y*f2)
+        if (pos.x*f1+pos.y*f2+f3)**2<(20**2)*(f1**2+f2**2):
+            pb=vec2D(self.ede.pos.x-pos.x,self.ede.pos.y-pos.y)
+            pa=vec2D(self.ste.pos.x-pos.x,self.ste.pos.y-pos.y)
+            if dot(pa,pb)<=0:
+                return True
+        return False
