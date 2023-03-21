@@ -14,6 +14,7 @@ font=pygame.font.SysFont('cambriamath',36)
 clock=pygame.time.Clock()
 # programIcon=pygame.image.load('icon.png')
 # pygame.display.set_icon(programIcon)
+ICON = 'images/icon.png'
 
 # variables
 FPS=120
