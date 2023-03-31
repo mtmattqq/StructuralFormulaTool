@@ -37,7 +37,7 @@ bufferString=""
 def show_text(text='',x=0,y=0,color=(0,0,0)):
     text=font.render(text,True,color)
     textRect=text.get_rect()
-    textRect.center=(x+relativePos.x,y+relativePos.y)
+    textRect.topleft=(x+relativePos.x-10,y+relativePos.y-20)
     screen.blit(text,textRect)
 
 def mouse_click():
