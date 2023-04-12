@@ -6,6 +6,7 @@ PI=3.1415926535
 EPS=0.00001
 id=0
 bid=0
+bbid=10000000
 
 class vec2D():
     def __init__(self,dx=0,dy=0):
@@ -133,6 +134,20 @@ class Button:
         self.color=color
         self.type=1
         self.bond=bd
+    def detect_mouse(self,pos=vec2D(0,0)):
+        if pos.x<self.pos.x+20 and pos.x>self.pos.x and pos.y<self.pos.y+20 and pos.y>self.pos.y:
+            return True
+        return False
+
+# not finishe yet
+class Benzene:
+    def __init__(self,pos=vec2D(0,0)):
+        self.pos=pos
+        self.elements=[Element(pos)]
+        self.id=bid
+        for i in range(6):
+            Element(pos)
+            self.elements.append()
     def detect_mouse(self,pos=vec2D(0,0)):
         if pos.x<self.pos.x+20 and pos.x>self.pos.x and pos.y<self.pos.y+20 and pos.y>self.pos.y:
             return True
