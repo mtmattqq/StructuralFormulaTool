@@ -157,6 +157,14 @@ class Benzene:
             newElement.id+=bbid
             self.elements.append(newElement)
     def detect_mouse(self,pos=vec2D(0,0)):
-        if pos.x<self.pos.x+20 and pos.x>self.pos.x and pos.y<self.pos.y+20 and pos.y>self.pos.y:
-            return True
-        return False
+        idx=0
+        # select the certain element
+        for element in self.elements:
+            if dis(element.pos,pos)<15:
+                return idx
+            idx+=1
+        # select main part
+        if dis(self.pos,pos)<30:
+            return 6
+        # not being selected
+        return -1

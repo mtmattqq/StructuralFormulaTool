@@ -24,6 +24,8 @@ bonds=[Element.Bond()]
 bonds[0].type=0
 buttons=[Element.Button()]
 buttons[0].type=0
+benzenes=[Element.Benzene()]
+# benzenes.pop()
 relativePos=Element.vec2D(480,290)
 selectedElement=elements[0]
 selectedBond=bonds[0]
@@ -131,6 +133,22 @@ def mouse_click():
             elif button.text=="x":
                 button.bond.type=0
 
+    for benzene in benzenes:
+        op=benzene.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
+        if op>=0 and op<=5:
+            # some element been selected
+            pos1=benzene.elements[op].pos
+            dif=Element.vec2D(pos1.x-benzene.pos.x,pos1.y-benzene.pos.y)
+            if selectedElement.id==element.id:
+                newElement=Element.Element(Element.vec2D(element.pos.x-dif.x,element.pos.y-dif.y))
+                newBond=Element.Bond(benzene.elements[op],newElement)
+                bonds.append(newBond)
+                elements.append(newElement)
+        elif op==6 and pygame.mouse.get_pressed()[0]:
+            difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
+            benzene.pos+=difference
+
+
     if operate:
         return
 
@@ -171,8 +189,8 @@ def add_bond_only():
     global selectedElement,selectedPos
     if selectedElement.selected!=0:
         return
+    t=pygame.mouse.get_pos()
     for element in elements:
-        t=pygame.mouse.get_pos()
         op=element.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
         if op==0:
             element.selected=0
@@ -189,21 +207,25 @@ def add_bond_only():
         elif op==4 and not element.down:
             element.selected=4
             selectedElement=element
-        
-
+    for benzene in benzenes:
+        op=benzene.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
+        if op>=0 and op<=5:
+            # some element been selected
+            pos1=benzene.elements[op].pos
+            dif=Element.vec2D(pos1.x-benzene.pos.x,pos1.y-benzene.pos.y)
+            if selectedElement.id==element.id:
+                newElement=Element.Element(Element.vec2D(element.pos.x-dif.x,element.pos.y-dif.y))
+                newBond=Element.Bond(benzene.elements[op],newElement)
+                bonds.append(newBond)
+                elements.append(newElement)
+        elif op==6 and pygame.mouse.get_pressed()[0]:
+            difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
+            benzene.pos+=difference
 
 # main loop
-
 InGame=True
 while InGame:
     screen.fill((255,255,255))
-
-    # show elements
-    for element in elements:
-        show_text(element.text,element.pos.x,element.pos.y)
-        if element.highlight:
-            pygame.draw.rect(screen,(0,0,0),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y-20,45,45],1)
-        # print(element.id)
     
     # show button when mouse get close
     t=pygame.mouse.get_pos()
@@ -224,17 +246,48 @@ while InGame:
             # debug
             pygame.draw.rect(screen,(255,0,255),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y+25,45,20],1)
         elif op==5 and element.highlight and pygame.mouse.get_pressed()[0]:
-            # t=pygame.mouse.get_pos()
-            if selectedPos!=Element.vec2D(0,0):
-                difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
-                # print(difference.get_tuple())
-                element.pos+=difference
-            selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
+            # if selectedPos!=Element.vec2D(0,0):
+            difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
+            # print(difference.get_tuple())
+            element.pos+=difference
+            
         elif op==6 and element.highlight:
             # debug
             pygame.draw.rect(screen,(0,255,255),[element.pos.x+relativePos.x+25,element.pos.y+relativePos.y-40,20,20],1)
         # print(op)
     
+    # show elements
+    for element in elements:
+        show_text(element.text,element.pos.x,element.pos.y)
+        if element.highlight:
+            pygame.draw.rect(screen,(0,0,0),[element.pos.x+relativePos.x-20,element.pos.y+relativePos.y-20,45,45],1)
+        # print(element.id)
+
+    # move benzene
+    for benzene in benzenes:
+        op=benzene.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
+        if op>=0 and op<=5:
+            # some element been focused
+            pos1=benzene.elements[op].pos
+            pygame.drbenzene.elements[i].posaw.circle(screen,(255,0,0),[pos1.x+relativePos.x+benzene.pos.x,pos1.y+relativePos.y+benzene.pos.y],15,1)
+            a=0
+        elif op==6 and pygame.mouse.get_pressed()[0]:
+            difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
+            benzene.pos+=difference
+
+
+    # show benzene
+    for benzene in benzenes:
+        for i in range(6):
+            pos1=benzene.elements[i].pos
+            pos2=benzene.elements[(i+1)%6].pos
+            pygame.draw.line(screen,(0,0,0),
+                [pos1.x+relativePos.x+benzene.pos.x,pos1.y+relativePos.y+benzene.pos.y],
+                [pos2.x+relativePos.x+benzene.pos.x,pos2.y+relativePos.y+benzene.pos.y]
+            )
+        pygame.draw.circle(screen,(0,0,0),[benzene.pos.x+relativePos.x,benzene.pos.y+relativePos.y],30,1)
+
+
     # show button
     for button in buttons:
         if button.type==0:
@@ -262,10 +315,12 @@ while InGame:
 
         st=Element.vec2D(bond.ste.pos.x,bond.ste.pos.y)
         st+=relativePos
-        st+=v
+        if bond.ste.id<100000000:
+            st+=v
         ed=Element.vec2D(bond.ede.pos.x,bond.ede.pos.y)
         ed+=relativePos
-        ed-=v
+        if bond.ste.id<100000000:
+            ed-=v
 
         if bond.type>=1:
             pygame.draw.line(screen,(0,0,0),st.get_tuple(),ed.get_tuple())
@@ -283,6 +338,7 @@ while InGame:
     screen.blit(text,textRect)
     pygame.draw.rect(screen,(100,100,100),[0,0,40,20],2)
     pygame.display.flip()
+    selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
     
     # event in pygame
     for event in pygame.event.get():
