@@ -42,6 +42,16 @@ def show_text(text='',x=0,y=0,color=(0,0,0)):
     textRect.topleft=(x+relativePos.x-10,y+relativePos.y-20)
     screen.blit(text,textRect)
 
+def delete_element(element):
+    for bond in bonds:
+        if bond.ste.id==element.id or bond.ede.id==element.id:
+            bond.ste.left=bond.ste.right=bond.ste.up=bond.ste.down=False
+            bond.ede.left=bond.ede.right=bond.ede.up=bond.ede.down=False
+            bond.type=0
+        # print(bond.ste.id,bond.ede.id,element.id)
+    if element.id<10000000:
+        elements.remove(element)
+
 def mouse_click():
     global selectedElement,selectedPos,bufferString
     # add new bond
@@ -106,35 +116,18 @@ def mouse_click():
                 bufferString=""
                 selectedPos=Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y)
         elif op==6 and element.highlight:
-            if not element.isDefault:
-                for bond in bonds:
-                    if bond.ste.id==element.id or bond.ede.id==element.id:
-                        bond.ste.left=bond.ste.right=bond.ste.up=bond.ste.down=False
-                        bond.ede.left=bond.ede.right=bond.ede.up=bond.ede.down=False
-                        bond.type=0
-                    print(bond.ste.id,bond.ede.id,element.id)
-                elements.remove(element)
+            if len(elements)>1:
+                delete_element(element)
         if op>=1 and op<=6:
             operate=True
         element.selected=0
     
-    
-
-    for button in buttons:
-        op=button.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
-        if op:
-            if button.text=="|":
-                button.bond.type=1
-            elif button.text=="||":
-                button.bond.type=2
-            elif button.text=="|||":
-                button.bond.type=3
-            elif button.text=="x":
-                button.bond.type=0
-
     for benzene in benzenes:
         op=benzene.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
-        if op>=0 and op<=5:
+        if op==-1:
+            benzene.highlight=False
+            continue
+        elif op>=0 and op<=5:
             # some element been selected
             pos1=benzene.elements[op].pos
             dif=Element.vec2D(pos1.x-benzene.pos.x,pos1.y-benzene.pos.y)
@@ -148,12 +141,34 @@ def mouse_click():
                 selectedElement.selected=0
                 newBond=Element.Bond(benzene.elements[op],selectedElement)
                 bonds.append(newBond)
-        elif op==6 and pygame.mouse.get_pressed()[0]:
+            operate=True
+        elif op==6:
             difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
             benzene.pos+=difference
+            if benzene.highlight:
+                benzene.highlight=False
+            else:
+                benzene.highlight=True
+        elif op==7:
+            benzenes.remove(benzene)
     Element.id-=1
     selectedElement.isDefault=True
     selectedElement=Element.Element()
+
+    if operate:
+        return
+
+    for button in buttons:
+        op=button.detect_mouse(Element.vec2D(t[0]-relativePos.x,t[1]-relativePos.y))
+        if op:
+            if button.text=="|":
+                button.bond.type=1
+            elif button.text=="||":
+                button.bond.type=2
+            elif button.text=="|||":
+                button.bond.type=3
+            elif button.text=="x":
+                button.bond.type=0
 
     if operate:
         return
@@ -270,13 +285,12 @@ while InGame:
         if op>=0 and op<=5:
             # some element been focused
             pos1=benzene.elements[op].pos
-            pygame.draw.circle(screen,(255,0,0),[pos1.x+relativePos.x,pos1.y+relativePos.y],15,1)
+            pygame.draw.circle(screen,(0,255,0),[pos1.x+relativePos.x,pos1.y+relativePos.y],15,1)
             a=0
         elif op==6 and pygame.mouse.get_pressed()[0]:
             difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
             benzene.pos+=difference
             benzene.set()
-
 
     # show benzene
     for benzene in benzenes:
@@ -288,7 +302,8 @@ while InGame:
                 [pos2.x+relativePos.x,pos2.y+relativePos.y]
             )
         pygame.draw.circle(screen,(0,0,0),[benzene.pos.x+relativePos.x,benzene.pos.y+relativePos.y],30,1)
-
+        if benzene.highlight:
+            pygame.draw.circle(screen,(255,0,0),[benzene.pos.x+relativePos.x+50,benzene.pos.y+relativePos.y-50],10,1)
 
     # show button
     for button in buttons:
@@ -358,6 +373,9 @@ while InGame:
                 bufferString+=event.unicode
             for element in elements:
                 if element.highlight:
+                    if bufferString=="C6H6":
+                        benzenes.append(Element.Benzene(element.pos))
+                        delete_element(element)
                     element.text=bufferString
     clock.tick(FPS)
 pygame.quit()

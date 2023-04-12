@@ -150,6 +150,7 @@ class Benzene:
         self.elements=[Element(vec2D(pos.x+benzene_size,pos.y))]
         self.elements[0].id+=bbid
         self.id=bid
+        self.highlight=False
         bid+=1
         tp=complex(benzene_size,0)
         for i in range(5):
@@ -171,7 +172,9 @@ class Benzene:
                 return idx
             idx+=1
         # select main part
-        if dis(self.pos,pos)<33:
+        if dis(self.pos,pos)<50:
             return 6
+        if dis(vec2D(self.pos.x+50,self.pos.y-50),pos)<10:
+            return 7
         # not being selected
         return -1
