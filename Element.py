@@ -1,6 +1,7 @@
 import pygame
 import math
 import copy
+import cmath
 
 PI=3.1415926535
 EPS=0.00001
@@ -140,14 +141,21 @@ class Button:
         return False
 
 # not finishe yet
+rotate=complex(0.5,0.866025404)
+benzene_size=50
 class Benzene:
     def __init__(self,pos=vec2D(0,0)):
+        global bid
         self.pos=pos
-        self.elements=[Element(pos)]
+        self.elements=[Element(vec2D(pos.x+benzene_size,pos.y))]
         self.id=bid
-        for i in range(6):
-            Element(pos)
-            self.elements.append()
+        bid+=1
+        tp=complex(benzene_size,0)
+        for i in range(5):
+            tp*=rotate
+            newElement=Element(vec2D(tp.real+pos.x,tp.imag+pos.y))
+            newElement.id+=bbid
+            self.elements.append(newElement)
     def detect_mouse(self,pos=vec2D(0,0)):
         if pos.x<self.pos.x+20 and pos.x>self.pos.x and pos.y<self.pos.y+20 and pos.y>self.pos.y:
             return True
