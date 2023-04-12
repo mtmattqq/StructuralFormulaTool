@@ -12,8 +12,8 @@ screen.fill((255,255,255))
 pygame.display.set_caption("結構式繪圖軟體")
 font=pygame.font.SysFont('cambriamath',36)
 clock=pygame.time.Clock()
-programIcon=pygame.image.load('icon.jpg')
-pygame.display.set_icon(programIcon)
+# programIcon=pygame.image.load('icon.jpg')
+pygame.display.set_icon(Element.programIcon)
 # ICON=os.path.join(os.getcwd(),"icon.jpg")
 
 # variables

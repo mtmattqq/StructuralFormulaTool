@@ -8,6 +8,7 @@ EPS=0.00001
 id=0
 bid=0
 bbid=1000000010
+programIcon=pygame.image.load('icon.jpg')
 
 class vec2D():
     def __init__(self,dx=0,dy=0):
