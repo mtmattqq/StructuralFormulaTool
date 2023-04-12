@@ -7,7 +7,7 @@ PI=3.1415926535
 EPS=0.00001
 id=0
 bid=0
-bbid=10000000
+bbid=1000000010
 
 class vec2D():
     def __init__(self,dx=0,dy=0):
@@ -148,6 +148,7 @@ class Benzene:
         global bid
         self.pos=pos
         self.elements=[Element(vec2D(pos.x+benzene_size,pos.y))]
+        self.elements[0].id+=bbid
         self.id=bid
         bid+=1
         tp=complex(benzene_size,0)
@@ -156,15 +157,21 @@ class Benzene:
             newElement=Element(vec2D(tp.real+pos.x,tp.imag+pos.y))
             newElement.id+=bbid
             self.elements.append(newElement)
+    def set(self):
+        self.elements[0].pos=vec2D(self.pos.x+benzene_size,self.pos.y)
+        tp=complex(benzene_size,0)
+        for i in range(1,6):
+            tp*=rotate
+            self.elements[i].pos=vec2D(tp.real+self.pos.x,tp.imag+self.pos.y)
     def detect_mouse(self,pos=vec2D(0,0)):
         idx=0
         # select the certain element
         for element in self.elements:
-            if dis(element.pos,pos)<15:
+            if dis(vec2D(element.pos.x,element.pos.y),pos)<15:
                 return idx
             idx+=1
         # select main part
-        if dis(self.pos,pos)<30:
+        if dis(self.pos,pos)<33:
             return 6
         # not being selected
         return -1
