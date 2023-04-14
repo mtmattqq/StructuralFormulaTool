@@ -153,18 +153,18 @@ class Benzene:
         self.id=bid
         self.highlight=False
         bid+=1
-        tp=complex(benzene_size,0)
+        self.rotation=complex(benzene_size,0)
+        tp=self.rotation
         for i in range(5):
             tp*=rotate
             newElement=Element(vec2D(tp.real+pos.x,tp.imag+pos.y))
             newElement.id+=bbid
             self.elements.append(newElement)
     def set(self):
-        self.elements[0].pos=vec2D(self.pos.x+benzene_size,self.pos.y)
-        tp=complex(benzene_size,0)
-        for i in range(1,6):
-            tp*=rotate
+        tp=self.rotation
+        for i in range(6):
             self.elements[i].pos=vec2D(tp.real+self.pos.x,tp.imag+self.pos.y)
+            tp*=rotate
     def detect_mouse(self,pos=vec2D(0,0)):
         idx=0
         # select the certain element

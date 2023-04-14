@@ -31,6 +31,7 @@ selectedElement=elements[0]
 selectedBond=bonds[0]
 selectedPos=Element.vec2D(0,0)
 bufferString=""
+mouseButton=-1
 
 # def file_path():
 #     filename=
@@ -237,6 +238,12 @@ def add_bond_only():
             difference=Element.vec2D((t[0]-relativePos.x)-selectedPos.x,(t[1]-relativePos.y)-selectedPos.y)
             benzene.pos+=difference
 
+def rotate_benzene():
+    for benzene in benzenes:
+        if benzene.highlight:
+            benzene.rotation*=complex(0.866025404,0.5)
+            benzene.set()
+
 # main loop
 InGame=True
 while InGame:
@@ -362,8 +369,14 @@ while InGame:
         if event.type==pygame.QUIT:
             InGame=False
         if event.type==pygame.MOUSEBUTTONUP:
-            mouse_click()
+            if mouseButton==0:
+                mouse_click()
+            mouseButton=-1
         if event.type==pygame.MOUSEBUTTONDOWN:
+            if pygame.mouse.get_pressed()[0]:
+                mouseButton=0
+            elif pygame.mouse.get_pressed()[1]:
+                mouseButton=1
             add_bond_only()
         if event.type==pygame.KEYDOWN:
             keys=pygame.key.get_pressed()
@@ -371,11 +384,17 @@ while InGame:
                 bufferString=bufferString[:-1]
             else:
                 bufferString+=event.unicode
+            operate=False
             for element in elements:
                 if element.highlight:
+                    operate=True
                     if bufferString=="C6H6":
                         benzenes.append(Element.Benzene(element.pos))
                         delete_element(element)
                     element.text=bufferString
+            if (not operate) and bufferString=="r":
+                rotate_benzene()
+                bufferString=""
+                
     clock.tick(FPS)
 pygame.quit()
